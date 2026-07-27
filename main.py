@@ -373,6 +373,26 @@ st.markdown("""
         background: #2a4b6e;
         border-radius: 20px;
     }
+    
+    /* Top toolbar hide */
+    [data-testid="stToolbar"] {
+        display: none;
+    }
+
+    /* Main menu hide */
+    #MainMenu {
+        visibility: hidden;
+    }
+
+    /* Footer hide */
+    footer {
+        visibility: hidden;
+    }
+
+    /* Header hide */
+    header {
+        visibility: hidden;
+    }    
     </style>
 """, unsafe_allow_html=True)
 
