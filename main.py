@@ -16,13 +16,41 @@ st.set_page_config(
 @st.cache_resource
 def load_model():
     try:
-        pipe = pickle.load(open(r"C:\MY\WORK\PROJECTS\Diabetes\model.pkl", 'rb'))
-        return pipe, list(pipe.feature_names_in_)
-    except FileNotFoundError:
-        # Fallback for deployment - use a dummy model if file not found
-        st.warning("⚠️ Model file not found. Using fallback mode.")
-        return None, ["Pregnancies", "Glucose", "BloodPressure", "SkinThickness", 
-                     "Insulin", "BMI", "DiabetesPedigreeFunction", "Age"]
+        # main.py ke same folder me model.pkl ko search karega
+        model_path = Path(__file__).parent / "model.pkl"
+
+        with open(model_path, "rb") as file:
+            pipe = pickle.load(file)
+
+        if hasattr(pipe, "feature_names_in_"):
+            feature_order = list(pipe.feature_names_in_)
+        else:
+            feature_order = [
+                "Pregnancies",
+                "Glucose",
+                "BloodPressure",
+                "SkinThickness",
+                "Insulin",
+                "BMI",
+                "DiabetesPedigreeFunction",
+                "Age",
+            ]
+
+        return pipe, feature_order
+
+    except Exception as e:
+        st.error(f"❌ Error loading model: {e}")
+
+        return None, [
+            "Pregnancies",
+            "Glucose",
+            "BloodPressure",
+            "SkinThickness",
+            "Insulin",
+            "BMI",
+            "DiabetesPedigreeFunction",
+            "Age",
+        ]
 
 pipe, feature_order = load_model()
 
